@@ -4,9 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pelican = { extras = ['markdown'] }
 
 [dev-packages]
+ghp-import = "*"
 
 [requires]
 python_version = "3.8"
+
+[packages.pelican]
+extras = [ "markdown",]
