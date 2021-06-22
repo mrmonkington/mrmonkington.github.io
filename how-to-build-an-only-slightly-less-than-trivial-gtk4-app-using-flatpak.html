@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en_gb">
+<head>
+          <title>Mark's notes - How to build an only-slightly-less-than-trivial GTK4 app using Flatpak</title>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Mark's notes Full Atom Feed" />
+        <link href="/feeds/howtos.atom.xml" type="application/atom+xml" rel="alternate" title="Mark's notes Categories Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/fonts.css" />
+        <link rel="stylesheet" href="/theme/css/base.css" />
+        <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+
+
+
+    <meta name="tags" content="GTK" />
+    <meta name="tags" content="Flatpak" />
+    <meta name="tags" content="meson" />
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Mark's notes</a></h1>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="https://github.com/mrmonkington">Github</a></li>
+            <li><a href="/pages/about-me.html">About me</a></li>
+            <li><a href="/pages/my-public-keys.html">Public keys</a></li>
+            <li class="active"><a href="/category/howtos.html">HOWTOs</a></li>
+        </ul></nav><!-- /#menu -->
+<section id="content" class="body">
+  <header>
+    <h1 class="entry-title">How to build an only-slightly-less-than-trivial GTK4 app using Flatpak</a></h1>
+ 
+  </header>
+  <footer class="post-info">
+    <time class="published" datetime="2021-06-18T21:30:00+01:00">
+      Fri 18 June 2021
+    </time>
+    <div class="category">
+        Category: <a href="/category/howtos.html">HOWTOs</a>
+    </div>
+    <div class="tags">
+        Tags:
+            <a href="/tag/gtk.html">GTK</a>
+            <a href="/tag/flatpak.html">Flatpak</a>
+            <a href="/tag/meson.html">meson</a>
+    </div>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>GTK4 is pretty new, and so it's likely that if you want to target it, you'll need to get your head around Flatpak in order to distribute your work.</p>
+<p>Herein is the <a href="https://developer.gnome.org/gtk4/stable/ch01s04.html">GTK4 'custom drawing' example from the docs</a> wrapped in a meson and Flatpak example.</p>
+<p><i>(Note, this write up doesn't cover publishing your application... yet)</i></p>
+<dl>
+  <dt>App name:</dt>
+    <dd>drawing-example
+  <dt>App domain:</dt>
+    <dd>com.verynoisy <i>This is my domain, make up your own!</i>
+  <dt>Build system:</dt>
+    <dd>meson + ninja (c.f. configure + make)
+</dl>
+
+<p>Dir structure:</p>
+<div class="highlight"><pre><span></span><code>drawing-example/
+  source/
+    meson.build
+    src/
+      meson.build
+      drawing-example.c
+</code></pre></div>
+
+<p>Grab the source from the gtk4 docs: https://developer.gnome.org/gtk4/stable/ch01s04.html</p>
+<p>Place in <code>drawing-example/source/src/drawing-example.c</code></p>
+<p>Edit the source so the app name is <code>com.verynoisy.drawing-example</code> on line 182 - this is important to ensure DBus permissions are correct, since Flatpak by default will only grant portal permissions to the bus of the same name as the app.</p>
+<p>Install latest flatpak:</p>
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:alexlarsson/flatpak
+sudo apt update
+sudo apt install flatpak flatpak-builder
+</code></pre></div>
+
+<p>Install latest platform and sdk images:</p>
+<div class="highlight"><pre><span></span><code>flatpak install org.gnome.Sdk//master
+flatpak install org.gnome.Platform//40
+</code></pre></div>
+
+<p>Create top level meson build specification:</p>
+<p>In <code>drawing-example/source/meson.build</code>:</p>
+<div class="highlight"><pre><span></span><code>project(&#39;drawing-example&#39;, &#39;c&#39;,
+  meson_version: &#39;&gt;= 0.56.0&#39;,
+  default_options: [
+    &#39;warning_level=2&#39;,
+    &#39;c_std=gnu11&#39;,
+  ],
+)
+
+subdir(&#39;src&#39;)
+</code></pre></div>
+
+<p>...and one in the actual source directory:</p>
+<div class="highlight"><pre><span></span><code>drawing_example_sources = [
+  &#39;drawing-example.c&#39;,
+]
+
+drawing_example_deps = [
+  dependency(&#39;gtk4&#39;, version: &#39;&gt;= 4.0&#39;),
+]
+
+executable(&#39;drawing-example&#39;, drawing_example_sources,
+  dependencies: drawing_example_deps, install: true
+)
+</code></pre></div>
+
+<p>(This is needlessly fragmented for a simple project, but you'll need this separation the moment your project gets even vaguely complex.)</p>
+<p>Create flatpak manifest so it knows how to invoke your build, etc, in <code>drawing-example/com.verynoisy.drawing-example.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">app-id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">com.verynoisy.drawing-example</span>
+<span class="nt">runtime</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.gnome.Platform</span>
+<span class="nt">runtime-version</span><span class="p">:</span> <span class="s">&#39;40&#39;</span>
+<span class="nt">sdk</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.gnome.Sdk</span>
+<span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">drawing-example</span>
+<span class="nt">finish-args</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="s">&quot;--share=ipc&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&quot;--socket=x11&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&quot;--share=network&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&quot;--device=dri&quot;</span>  <span class="c1"># for opengl</span>
+<span class="nt">modules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">drawing-example</span>
+    <span class="nt">buildsystem</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">meson</span>
+    <span class="nt">sources</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dir</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source</span>
+</code></pre></div>
+
+<p>Build:</p>
+<div class="highlight"><pre><span></span><code>flatpak-builder --install <span class="se">\</span>
+  --user <span class="se">\</span>
+  build-dir <span class="se">\</span>
+  com.verynoisy.drawing-example.yml <span class="se">\</span>
+  com.verynoisy.drawing-example
+</code></pre></div>
+
+<p>(You can add <code>--force-clean</code> if you've just made changes to configs)</p>
+<p>This will do this following:</p>
+<ul>
+<li>Initialise a flatpak build directory with your chosen platform and SDK, in <code>build-dir</code>.</li>
+<li>Run <code>meson setup --prefix=/app</code> against the build config on your host machine, but in the sandbox, using the meson version (and other dev tools) provided by the SDK you selected, outputting all build files somewhere in <code>build-dir</code> (you don't really need to care where).</li>
+<li>Sandbox-run <code>ninja</code> (c.f. <code>make</code>) against those meson build files, producing your binary.</li>
+<li>Install it all the the right place in the flatpak build-dir, as if it were installed on a real system under <code>/app</code> (c.f. <code>/usr/local/</code>, etc)</li>
+</ul>
+<p>Test:</p>
+<div class="highlight"><pre><span></span><code>flatpak-builder <span class="se">\</span>
+  --run --socket<span class="o">=</span>x11 <span class="se">\</span>
+  --share<span class="o">=</span>ipc <span class="se">\</span>
+  --device<span class="o">=</span>dri <span class="se">\</span>
+  build-dir <span class="se">\</span>
+  com.verynoisy.drawing-example.yml <span class="se">\</span>
+  /app/bin/drawing-example
+</code></pre></div>
+
+<h2>debugging DBus probs (e.g. can't register, etc)</h2>
+<p>Listen for all DBus activity</p>
+<div class="highlight"><pre><span></span><code>dbus-monitor --session
+</code></pre></div>
+
+<p>See what this app tries to do:</p>
+<div class="highlight"><pre><span></span><code>flatpak-builder --run <span class="se">\</span>
+  --socket<span class="o">=</span>session-bus <span class="se">\</span>
+  --share<span class="o">=</span>network <span class="se">\</span>
+  --socket<span class="o">=</span>x11 <span class="se">\</span>
+  --share<span class="o">=</span>ipc <span class="se">\</span>
+  --device<span class="o">=</span>dri <span class="se">\</span>
+  build-dir <span class="se">\</span>
+  com.verynoisy.drawing-example.yml <span class="se">\</span>
+  /app/bin/drawing-example
+</code></pre></div>
+
+<p>TODO:</p>
+<ul>
+<li>Debugging</li>
+<li>Releasing</li>
+<li>Drawing the rest of the owl...</li>
+</ul>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Powered by <a href="https://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+</body>
+</html>

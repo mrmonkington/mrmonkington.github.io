@@ -1,0 +1,70 @@
+body {
+    font-size: normal;
+    text-underline-offset: 20%;
+}
+body, p, td {
+    font-family: Lato;
+    color: #505050;
+}
+p, td {
+    font-size: 1rem;
+    line-height: 1.3rem;
+}
+body {
+    padding: 2rem;
+}
+#content {
+    max-width: 60rem;   
+}
+.highlight pre {
+    padding: 1rem;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    font-family: Spartan;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+h1 {
+    font-size: 2rem;
+}
+h2 {
+    font-size: 1.6rem;
+}
+h3 {
+    font-size: 1.3rem;
+}
+
+code, pre {
+    font-family: monospace;
+    color: #000000;
+}
+code {
+    font-size: 0.9rem;
+}
+
+li {
+    list-style-type: "\00D7\2003";
+}
+
+.post-info {
+    font-size: 0.8rem;
+    line-height: 1.3rem;
+}
+#banner a:link,
+#banner a:hover,
+#banner a:visited,
+#banner a:active {
+    color: #0069ff;
+}
+
+a:link, a:hover, a:active {
+    color: #0069ff;
+}
+a:visited {
+    color: #3069c0;
+}
