@@ -29,6 +29,9 @@
         {% if TAG_FEED_RSS and tag %}
         <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
         {% endif %}
+        <link rel="stylesheet" href="/theme/css/fonts.css" />
+        <link rel="stylesheet" href="/theme/css/base.css" />
+        <link rel="stylesheet" href="/theme/css/pygment.css" />
         {% endblock head %}
 </head>
 
@@ -55,7 +58,7 @@
         {% endblock %}
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>,
+                Powered by <a href="https://getpelican.com/">Pelican</a>,
                 which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
         </footer><!-- /#contentinfo -->

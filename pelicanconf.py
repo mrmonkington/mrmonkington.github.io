@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-AUTHOR = 'mrmonkington'
-SITENAME = 'mrmonkington'
+AUTHOR = 'Mark'
+SITENAME = "Mark's notes"
 SITEURL = ''
 THEME = 'theme/'
 
@@ -21,15 +21,28 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (
-    ('Pelican', 'https://getpelican.com/'),
-    ('You can modify those links in your config file', '#'),
+    ('Github', 'https://github.com/mrmonkington'),
+)
+MENUITEMS = (
+    ('Github', 'https://github.com/mrmonkington'),
 )
 # Social widget
 SOCIAL = (
-    ('@mrmonkinton', 'twitter.com/mrmonkington'),
+    ('@mrmonkington', 'twitter.com/mrmonkington'),
 )
 
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+READTIME_WPM = 180
+
+STATIC_PATHS = [
+    'images',
+    'extra/favicon.ico',
+]
+EXTRA_PATH_METADATA = {
+    'extra/favicon.ico': {'path': 'favicon.ico'},
+}
+

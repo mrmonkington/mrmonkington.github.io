@@ -3,13 +3,14 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[packages]
-
 [dev-packages]
 ghp-import = "*"
 
 [requires]
 python_version = "3.8"
+
+[packages]
+pelican-readtime = "*"
 
 [packages.pelican]
 extras = [ "markdown",]
