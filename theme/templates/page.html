@@ -17,11 +17,14 @@
     {% import 'translations.html' as translations with context %}
     {{ translations.translations_for(page) }}
 
+    <section id="content">
     {{ page.content }}
 
+    <p class="meta">
+        Published: {{ page.locale_date }}
     {% if page.modified %}
-        <p>
-        Last updated: {{ page.locale_modified }}
-        </p>
+        (updated: {{ page.locale_modified }})
     {% endif %}
+    </p>
+    </section>
 {% endblock %}
