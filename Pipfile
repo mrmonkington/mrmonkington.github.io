@@ -11,6 +11,5 @@ python_version = "3.9"
 
 [packages]
 pelican-readtime = "*"
-
-[packages.pelican]
-extras = [ "markdown",]
+ghp-import = "*"
+pelican = {extras = [ "markdown",]}
