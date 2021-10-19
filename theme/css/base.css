@@ -4,7 +4,7 @@ body {
 }
 body, p, td {
     font-family: Lato;
-    color: #505050;
+    color: #242220;
 }
 p, td {
     font-size: 1rem;
@@ -14,7 +14,7 @@ body {
     padding: 2rem;
 }
 #content {
-    max-width: 60rem;   
+    max-width: 50rem;   
 }
 .highlight pre {
     padding: 1rem;
@@ -24,18 +24,22 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     text-decoration: none;
 }
 
-h1, h2, h3 {
+#banner h1 {
     font-family: Spartan;
     font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: -1px;
+    font-size: 3.2rem;
+    margin-bottom: 0rem;
 }
 h1 {
-    font-size: 2rem;
+    font-size: 2.4rem;
 }
 h2 {
     font-size: 1.6rem;
 }
 h3 {
+    max-width: 30rem;
     font-size: 1.3rem;
 }
 
@@ -46,9 +50,41 @@ code, pre {
 code {
     font-size: 0.9rem;
 }
+#post-list {
+    padding-left: 1rem;
+}
+#post-list>li {
+    list-style-type: "\00D7";
+    margin-left: 0rem;
+    padding-left: 1rem;
+}
 
-li {
-    list-style-type: "\00D7\2003";
+nav {
+    margin-bottom: 3rem;
+    padding-left: 0.25rem; /* little optical nudge */
+}
+nav ul {
+    margin: 0;
+    padding: 0;
+}
+nav li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+nav li::before {
+    content: "|";
+    color: #908880;
+}
+nav li a {
+    padding-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+nav li:first-of-type a {
+    padding-left: 0rem;
+}
+nav li:first-of-type::before {
+    content: none;
 }
 
 .post-info {
@@ -60,11 +96,22 @@ li {
 #banner a:visited,
 #banner a:active {
     color: #0069ff;
+    text-decoration: none;
+    color: #242220;
 }
 
 a:link, a:hover, a:active {
     color: #0069ff;
 }
 a:visited {
-    color: #3069c0;
+    color: #6099ff;
+}
+#contentinfo {
+    margin-top: 4rem;
+    font-size: 0.8rem;
+}
+p.meta {
+    font-size: 0.8rem;
+    color: #908880;
+    margin-top: 2rem;
 }
