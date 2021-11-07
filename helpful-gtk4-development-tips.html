@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en_gb">
+<head>
+          <title>Mark's notes - Helpful GTK4 Development tips</title>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Mark's notes Full Atom Feed" />
+        <link href="/feeds/howtos.atom.xml" type="application/atom+xml" rel="alternate" title="Mark's notes Categories Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/fonts.css" />
+        <link rel="stylesheet" href="/theme/css/base.css" />
+        <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+
+
+
+    <meta name="tags" content="GTK" />
+    <meta name="tags" content="Flatpak" />
+    <meta name="tags" content="icons" />
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Mark's notes</a></h1>
+        <nav id="menu"><ul>
+            <li><a href="https://github.com/mrmonkington">Github</a></li>
+            <li><a href="/pages/about-me.html">About me</a></li>
+            <li><a href="/pages/my-public-keys.html">Public keys</a></li>
+            <li class="active"><a href="/category/howtos.html">HOWTOs</a></li>
+        </ul></nav><!-- /#menu -->
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <header>
+    <h1 class="entry-title">Helpful GTK4 Development tips</a></h1>
+ 
+  </header>
+  <footer class="post-info">
+    <time class="published" datetime="2021-06-24T14:00:00+01:00">
+      Thu 24 June 2021
+    </time>
+    <div class="category">
+        Category: <a href="/category/howtos.html">HOWTOs</a>
+    </div>
+    <div class="tags">
+        Tags:
+            <a href="/tag/gtk.html">GTK</a>
+            <a href="/tag/flatpak.html">Flatpak</a>
+            <a href="/tag/icons.html">icons</a>
+    </div>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>Show me all the icons I have installed in my platform pak:</p>
+<div class="highlight"><pre><span></span><code>flatpak-builder --run --socket=session-bus ./build com.verynoisy.najork.json /usr/bin/gtk4-icon-browser
+</code></pre></div>
+
+<p>Not many, huh? Use the systme ones:</p>
+<div class="highlight"><pre><span></span><code>env=XDG_DATA_DIRS=/run/host/share:/app/share:/usr/share:/usr/share/runtime/share
+</code></pre></div>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                Powered by <a href="https://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="https://www.python.org/">Python</a>.
+        </footer><!-- /#contentinfo -->
+</body>
+</html>
